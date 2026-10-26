@@ -246,7 +246,7 @@ def tidak_ada(e):
             "Halaman tidak ditemukan</h1>"), 404
 
 
-# ---------- Halaman publik ----------
+# --------- Halaman publik ---------
 @app.route("/")
 def beranda():
     return redirect(url_for("admin_dashboard"))
