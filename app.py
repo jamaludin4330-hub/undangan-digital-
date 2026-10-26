@@ -533,9 +533,6 @@ def admin_hapus(uid):
 init_db()
 
 if __name__ == "__main__":
-    # Mode debug hanya lewat FLASK_DEBUG=1 dan dikunci ke localhost
-    # (debugger Werkzeug berbahaya bila terbuka di jaringan).
-    # Untuk menguji dari HP di WiFi yang sama: jalankan tanpa FLASK_DEBUG.
     debug = os.environ.get("FLASK_DEBUG") == "1"
     host = "127.0.0.1" if debug else os.environ.get("HOST", "0.0.0.0")
     app.run(debug=debug, host=host, port=5000)
