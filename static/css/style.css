@@ -79,7 +79,7 @@ img{max-width:100%;display:block}
   transform:translate(-50%,50%);pointer-events:none;z-index:3}
 .bunga-kotak{
   position:absolute;top:0;left:0;width:min(40%,160px);height:auto;
-  transform:translate(-16%,-48%);pointer-events:none;z-index:3}
+  transform:translate(-16%,-35%);pointer-events:none;z-index:3}
 #kutipan{padding-top:110px}
 .kutipan-panel-ukiran{padding-top:58px}
 
@@ -103,7 +103,7 @@ img{max-width:100%;display:block}
 #cover .tulis{font-size:clamp(1.6rem,7vw,2rem)}
 #cover .nama-besar{font-family:var(--judul);font-size:clamp(2.5rem,12.5vw,3.6rem);margin:44px 0}
 #cover .tanggal{font-size:1rem}
-#cover .tombol{padding:11px 32px;font-size:.88rem;margin-top:auto;margin-bottom:6vh}
+#cover .tombol{padding:11px 32px;font-size:.88rem;margin-top:auto;margin-bottom:10vh}
 @media(min-width:900px){
   #cover{left:auto;width:var(--lebar)}
 }
@@ -153,7 +153,7 @@ img{max-width:100%;display:block}
 .arch-photo{width:100%;height:100%;object-fit:cover;transition:transform 8s ease}
 .arch-card.tampak .arch-photo{transform:scale(1.06)}
 .arch-ornament{
-  position:absolute;top:-40px;left:50%;width:118%;max-width:none;height:auto;
+  position:absolute;top:-30px;left:50%;width:118%;max-width:none;height:auto;
   transform:translateX(-50%);pointer-events:none;z-index:3}
 
 /* ===== Tombol ===== */
@@ -235,7 +235,7 @@ body:not(.terkunci) .nav-melayang{transform:translate(-50%,0)}
 .hitung small{font-size:.72rem;color:var(--lembut)}
 
 /* ===== Acara ===== */
-.acara-panel{padding-top:92px;margin-top:110px}
+.acara-panel{padding-top:140px;margin-top:110px}
 #acara .karangan{top:110px}
 .acara-blok{margin-bottom:40px}
 .acara-blok .tanggal{margin-bottom:6px}
@@ -328,4 +328,17 @@ body:not(.terkunci) .nav-melayang{transform:translate(-50%,0)}
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
   .muncul,.fade{opacity:1;transform:none}
   .berkilau{background-position:0 0}
+}
+
+/* Membuat teks nama mempelai menjadi susunan atas-bawah */
+.nama-vertikal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+}
+
+.nama-vertikal .amp-tengah {
+  font-size: 0.6em;
+  margin: 4px 0;
 }
