@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <title>Dashboard Customer | Undangan Digital</title>
+  <meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+  <header class="atas">
+    <div class="atas-isi">
+      <div class="merek">Undangan Digital<small>Dashboard Mempelai</small></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="judul-halaman">
+      <div>
+        <h1>Halo, {{ u.panggilan_pria }} &amp; {{ u.panggilan_wanita }}</h1>
+        <p>{{ u.tanggal_acara|tgl_id }}. Halaman ini hanya bisa dibuka lewat link rahasia yang kamu terima.</p>
+      </div>
+      <a class="btn garis" href="{{ export_url }}">Unduh CSV</a>
+    </div>
+
+    <div class="statistik">
+      <div class="stat"><b>{{ ringkas.hadir }}</b><span>Konfirmasi hadir</span><small>{{ ringkas.orang }} orang</small></div>
+      <div class="stat"><b>{{ ringkas.ragu }}</b><span>Belum pasti</span></div>
+      <div class="stat"><b>{{ ringkas.tidak }}</b><span>Tidak hadir</span></div>
+      <div class="stat"><b>{{ u.tanggal_acara|sisa_hari }}</b><span>Hari menuju acara</span></div>
+    </div>
+
+    <div class="kartu">
+      <h2>Bagikan Undangan</h2>
+      <p class="ket">Satu link ini dipakai untuk semua tamu. Tamu mengisi nama sendiri di form RSVP.</p>
+      <div class="tautan">{{ base_url }}</div>
+      <div class="aksi">
+        <button class="btn" type="button" data-salin="{{ base_url }}">Salin Link</button>
+        <a class="btn garis" data-wa="{{ base_url }}" target="_blank" rel="noopener">Bagikan lewat WhatsApp</a>
+        <a class="btn garis" href="{{ base_url }}" target="_blank" rel="noopener">Buka Undangan</a>
+      </div>
+    </div>
+
+    <div class="kartu">
+      <h2>Daftar Konfirmasi dan Ucapan</h2>
+      <p class="ket">Gunakan tombol di bawah untuk menyaring berdasarkan status.</p>
+      <div class="filter">
+        <button type="button" class="aktif" data-filter="semua">Semua ({{ ringkas.total }})</button>
+        <button type="button" data-filter="hadir">Hadir ({{ ringkas.hadir }})</button>
+        <button type="button" data-filter="ragu">Belum pasti ({{ ringkas.ragu }})</button>
+        <button type="button" data-filter="tidak_hadir">Tidak hadir ({{ ringkas.tidak }})</button>
+        <button type="button" data-filter="ucapan">Ucapan saja</button>
+      </div>
+      <div class="tabel-bungkus">
+        <table id="tabel-rsvp" class="responsif">
+          <thead>
+            <tr><th>Nama</th><th>Status</th><th>Jumlah</th><th>Ucapan</th><th>Waktu</th></tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+            <tr data-status="{{ r.kehadiran }}">
+              <td data-label="Nama"><strong>{{ r.nama }}</strong></td>
+              <td data-label="Status"><span class="lencana {{ r.kehadiran }}">{{ {"hadir":"Hadir","tidak_hadir":"Tidak hadir","ragu":"Belum pasti","ucapan":"Ucapan"}.get(r.kehadiran, "-") }}</span></td>
+              <td data-label="Jumlah">{{ r.jumlah if r.kehadiran != "ucapan" else "-" }}</td>
+              <td data-label="Ucapan">{{ r.ucapan or "-" }}</td>
+              <td data-label="Waktu" class="waktu">{{ r.dibuat }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" style="text-align:center;color:var(--lembut)">Belum ada konfirmasi.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p id="kosong-filter" style="display:none;text-align:center;color:var(--lembut);padding:14px">Tidak ada data untuk status ini.</p>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Undangan Pernikahan {{ u.panggilan_pria }} &amp; {{ u.panggilan_wanita }}</title>
+  <meta property="og:title" content="Undangan Pernikahan {{ u.panggilan_pria }} &amp; {{ u.panggilan_wanita }}">
+  <meta property="og:description" content="{{ u.tanggal_acara|tgl_id }}">
+  {% if u.foto_cover %}<meta property="og:image" content="{{ url_for('static', filename=u.foto_cover, _external=True) }}">{% endif %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Pinyon+Script&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="terkunci{% if u.foto_cover %} punya-foto-cover{% endif %}"
+      {% if u.foto_cover %}style="--foto-latar:url('{{ url_for('static', filename=u.foto_cover) }}')"{% endif %}>
+
+{% set t_pembuka = u.kalimat_pembuka or "Dengan rahmat Tuhan Yang Maha Esa kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri pernikahan kami:" %}
+{% set t_rsvp    = u.kalimat_rsvp or "Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai. Atas kehadiran serta doa restu, kami ucapkan terima kasih." %}
+{% set t_hadiah  = u.kalimat_hadiah or "Kehadiran dan doa Anda adalah hadiah terindah bagi kami. Namun, apabila berkenan memberikan tanda kasih, silakan gunakan informasi di bawah ini." %}
+{% set t_penutup = u.kalimat_penutup or "Atas kehadiran serta doa restu Bapak/Ibu/Saudara/i, kami ucapkan terima kasih." %}
+{% set t_kutipan = u.kutipan or "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu merasa tenteram kepadanya. Dia menjadikan di antaramu rasa cinta dan kasih sayang." %}
+{% set t_sumber  = u.sumber_kutipan or "Q.S. Ar-Rum : 21" %}
+
+<!-- Latar kolom undangan (tetap saat scroll) -->
+<div class="latar-hp" aria-hidden="true"></div>
+
+<!-- Sisi kiri layar laptop: foto besar dan judul (disembunyikan di HP) -->
+<div class="sisi-kiri" aria-hidden="true">
+  <p class="kecil">Undangan Pernikahan</p>
+  <h2>{{ u.panggilan_pria }} &amp; {{ u.panggilan_wanita }}</h2>
+  <p class="tgl-besar">{{ u.tanggal_acara|tgl_id }}</p>
+</div>
+
+<!-- Musik: taruh file di static/audio/musik.mp3 -->
+<audio id="musik" loop preload="auto">
+  <source src="{{ url_for('static', filename='audio/musik.mp3') }}" type="audio/mpeg">
+</audio>
+<button id="btn-musik" class="musik-tombol" type="button" aria-label="Putar atau hentikan musik">
+  <svg class="ik-jeda" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+  <svg class="ik-putar" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+</button>
+
+<nav id="nav-melayang" class="nav-melayang" aria-label="Navigasi undangan">
+  <a href="#beranda" aria-label="Beranda">
+    <svg viewBox="0 0 32 32"><rect x="4" y="8" width="24" height="17" rx="2.5"/><path d="M4 11l12 8 12-8"/></svg>
+  </a>
+  <a href="#mempelai" aria-label="Mempelai">
+    <svg viewBox="0 0 32 32"><path d="M16 9.2c-1.6-1.2-2.6-1.9-2.6-3a1.5 1.5 0 0 1 2.6-.9 1.5 1.5 0 0 1 2.6.9c0 1.1-1 1.8-2.6 3z"/><circle cx="11" cy="14.5" r="3.3"/><path d="M5 27v-3a6 6 0 0 1 12 0v3"/><circle cx="22" cy="15.5" r="3"/><path d="M18.5 27v-2.5a5 5 0 0 1 9 -2"/></svg>
+  </a>
+  <a href="#acara" aria-label="Acara">
+    <svg viewBox="0 0 32 32"><rect x="4" y="6" width="24" height="21" rx="3"/><path d="M4 12h24M10 4v5M22 4v5M9 17h2M15 17h2M21 17h2M9 22h2M15 22h2"/></svg>
+  </a>
+  <a href="#rsvp" aria-label="RSVP">
+    <svg viewBox="0 0 32 32"><rect x="9" y="3" width="14" height="26" rx="3"/><path d="M13 9h6M12 15h8M12 19h8M12 23h5"/></svg>
+  </a>
+  <a href="#ucapan" aria-label="Ucapan">
+    <svg viewBox="0 0 32 32"><path d="M6 6h20a2.5 2.5 0 0 1 2.5 2.5v11A2.5 2.5 0 0 1 26 22h-9l-6 5v-5H6a2.5 2.5 0 0 1-2.5-2.5v-11A2.5 2.5 0 0 1 6 6z"/><path d="M16 18c-2.8-2-4-3-4-4.6a2.2 2.2 0 0 1 4-1.2 2.2 2.2 0 0 1 4 1.2c0 1.6-1.2 2.6-4 4.6z"/></svg>
+  </a>
+</nav>
+
+<div class="hp">
+
+  <!-- ===== Cover (bersih, langsung buka undangan) ===== -->
+  <section id="cover" aria-label="Sampul undangan">
+    <div class="cover-isi">
+      <p class="script tulis">the wedding of</p>
+      <h1 class="nama-besar">
+        <span class="berkilau">{{ u.panggilan_pria }}</span>
+        <span class="amp berkilau">&amp;</span>
+        <span class="berkilau">{{ u.panggilan_wanita }}</span>
+      </h1>
+      <p class="tanggal">{{ u.tanggal_acara|tgl_id }}</p>
+      <button id="btn-buka" class="tombol" type="button">Buka Undangan</button>
+    </div>
+  </section>
+
+  <!-- ===== Foto utama dengan bingkai kubah (arch) dan aset bunga ===== -->
+  <section class="bagian hero" id="beranda">
+    <div class="isi hero-isi">
+      <div class="panggung">
+
+        <!-- Bingkai utama bentuk kubah (arch) -->
+        <div class="arch-card muncul zoom">
+          <!-- Ornamen bunga di puncak kubah (karangan-atas.webp) -->
+          <img src="{{ url_for('static', filename='img/karangan-atas.webp') }}" class="arch-ornament" alt="Ornamen Bunga">
+
+          <!-- Foto pasangan di dalam bingkai kubah -->
+          <div class="arch-photo-wrapper">
+            {% if u.foto_cover %}
+              <img src="{{ url_for('static', filename=u.foto_cover) }}" class="arch-photo" alt="Foto Pengantin">
+            {% else %}
+              <div class="foto-kosong" style="width:100%;height:100%"></div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <p class="script tulis muncul" style="--urut:1;margin-top:46px">the wedding of</p>
+      <h2 class="nama-besar kecil-nama muncul" style="--urut:2"><span class="berkilau">{{ u.panggilan_pria }} &amp; {{ u.panggilan_wanita }}</span></h2>
+      <p class="tanggal muncul" style="--urut:3">{{ u.tanggal_acara|tgl_id }}</p>
+    </div>
+  </section>
+
+  <!-- ===== Kutipan dengan ornamen ukiran di garis batas bawah kotak ===== -->
+  <section class="bagian" id="kutipan">
+    <div class="isi panel muncul kutipan-panel-ukiran">
+      <img class="bunga-kotak" src="{{ url_for('static', filename='img/anggrek-pojok.webp') }}" alt="">
+      <p lang="ar" dir="rtl" class="arab">وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةً</p>
+      <p class="kutipan">&ldquo;{{ t_kutipan }}&rdquo;</p>
+      <p class="sumber">{{ t_sumber }}</p>
+      <!-- Ornamen ukiran di bawah teks/kutipan (ornamen-tengah.webp) -->
+      <img class="ornamen-bawah-kotak" src="{{ url_for('static', filename='img/ornamen-tengah.webp') }}" alt="Ornamen Ukiran Bawah">
+    </div>
+  </section>
+
+  <!-- ===== Mempelai ===== -->
+  <section class="bagian" id="mempelai">
+    <img class="pojok ka kecil-pojok fade" src="{{ url_for('static', filename='img/anggrek-pojok.webp') }}" alt="">
+    <div class="isi panel" style="margin-top:10px">
+      <h2 class="judul muncul">With Love</h2>
+      <p class="pembuka muncul" style="--urut:1">{{ t_pembuka }}</p>
+
+      <div class="foto-pasangan">
+        <figure class="muncul dari-kiri">
+          <div class="bingkai-oval">
+            {% if u.foto_pria %}<img src="{{ url_for('static', filename=u.foto_pria) }}" alt="{{ u.nama_pria }}" loading="lazy">
+            {% else %}<div class="foto-kosong"></div>{% endif %}
+          </div>
+          <span class="peran">the groom</span>
+        </figure>
+        <figure class="muncul dari-kanan">
+          <div class="bingkai-oval">
+            {% if u.foto_wanita %}<img src="{{ url_for('static', filename=u.foto_wanita) }}" alt="{{ u.nama_wanita }}" loading="lazy">
+            {% else %}<div class="foto-kosong"></div>{% endif %}
+          </div>
+          <span class="peran">the bride</span>
+        </figure>
+      </div>
+
+      <div class="orang muncul">
+        <h3>{{ u.nama_pria }}</h3>
+        {% if u.ortu_pria %}<p>Putra dari<br>{{ u.ortu_pria }}</p>{% endif %}
+      </div>
+      <div class="dan muncul zoom">&amp;</div>
+      <div class="orang muncul">
+        <h3>{{ u.nama_wanita }}</h3>
+        {% if u.ortu_wanita %}<p>Putri dari<br>{{ u.ortu_wanita }}</p>{% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Save the date dan hitung mundur ===== -->
+  <section class="bagian" id="hitung-mundur">
+    <div class="isi">
+      <div class="bingkai-renda muncul zoom">
+        <img class="renda" src="{{ url_for('static', filename='img/renda-oval.png') }}" alt="">
+        <div class="isi-renda">
+          {% if u.foto_cover %}<img src="{{ url_for('static', filename=u.foto_cover) }}" alt="">{% endif %}
+        </div>
+        <div class="teks-tanggal">
+          <b>{{ u.tanggal_acara|tgl_hari_bulan }}</b>
+          <span>{{ u.tanggal_acara|tgl_tahun }}</span>
+          <small>save the date</small>
+        </div>
+      </div>
+      <h2 id="judul-hitung" class="judul muncul" style="--urut:1;margin-top:34px">Menuju Hari Bahagia</h2>
+      <div id="hitung" class="hitung muncul" style="--urut:2" data-tanggal="{{ u.tanggal_acara }}">
+        <div><b data-u="hari">0</b><small>Hari</small></div>
+        <div><b data-u="jam">0</b><small>Jam</small></div>
+        <div><b data-u="menit">0</b><small>Menit</small></div>
+        <div><b data-u="detik">0</b><small>Detik</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Acara ===== -->
+  <section class="bagian" id="acara">
+    <img class="karangan fade" src="{{ url_for('static', filename='img/karangan-atas.webp') }}" alt="">
+    <div class="isi panel acara-panel">
+      <div class="acara-blok muncul">
+        <h2 class="judul">Akad Nikah</h2>
+        <p class="tanggal">{{ u.tanggal_acara|tgl_id }}</p>
+        <p class="waktu">{{ u.akad_waktu }}</p>
+        <p class="tempat">{{ u.akad_tempat }}</p>
+        <p class="alamat">{{ u.akad_alamat }}</p>
+        {% if u.maps_url %}<a class="tombol" href="{{ u.maps_url }}" target="_blank" rel="noopener">Lihat Lokasi</a>{% endif %}
+      </div>
+
+      {% if u.resepsi_tempat %}
+      <div class="acara-blok muncul" style="--urut:1">
+        <h2 class="judul">Resepsi</h2>
+        <p class="tanggal">{{ u.tanggal_acara|tgl_id }}</p>
+        <p class="waktu">{{ u.resepsi_waktu }}</p>
+        <p class="tempat">{{ u.resepsi_tempat }}</p>
+        <p class="alamat">{{ u.resepsi_alamat }}</p>
+        {% if u.maps_url %}<a class="tombol" href="{{ u.maps_url }}" target="_blank" rel="noopener">Lihat Lokasi</a>{% endif %}
+      </div>
+      {% endif %}
+
+      <button id="btn-kalender" class="tombol garis muncul" type="button" style="--urut:2"
+              data-judul="Pernikahan {{ u.panggilan_pria }} &amp; {{ u.panggilan_wanita }}"
+              data-mulai="{{ u.tanggal_acara }}"
+              data-lokasi="{{ u.akad_tempat }}, {{ u.akad_alamat }}">Simpan ke Kalender</button>
+    </div>
+  </section>
+
+
+  <!-- ===== RSVP (bersih, diisi manual) ===== -->
+  <section class="bagian" id="rsvp">
+    <div class="isi panel">
+      <div class="bingkai-lengkung muncul zoom" style="max-width:300px;margin-bottom:26px">
+        {% if galeri %}<img src="{{ url_for('static', filename=galeri[0]) }}" alt="Foto mempelai" loading="lazy">
+        {% elif u.foto_cover %}<img src="{{ url_for('static', filename=u.foto_cover) }}" alt="Foto mempelai" loading="lazy">
+        {% else %}<div class="foto-kosong" style="width:100%;height:100%"></div>{% endif %}
+      </div>
+      <h2 class="judul besar muncul">RSVP</h2>
+      <p class="pembuka muncul" style="--urut:1;margin-bottom:22px">{{ t_rsvp }}</p>
+      <form id="form-rsvp" class="form muncul" style="--urut:2" data-url="{{ url_for('kirim_rsvp', slug=u.slug) }}" autocomplete="off">
+        <input type="text" name="website" class="hp-jebakan" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label>Nama *
+          <input type="text" name="nama" maxlength="60" value="" placeholder="Masukkan nama Anda..." required>
+        </label>
+        <label>Jumlah tamu (orang) *
+          <select name="jumlah">
+            {% for n in range(1, 11) %}<option value="{{ n }}">{{ n }}</option>{% endfor %}
+          </select>
+        </label>
+        <div class="pilihan">
+          <span>Konfirmasi Kehadiran *</span>
+          <label><input type="radio" name="kehadiran" value="hadir" required> Hadir</label>
+          <label><input type="radio" name="kehadiran" value="ragu"> Masih ragu</label>
+          <label><input type="radio" name="kehadiran" value="tidak_hadir"> Maaf, saya tidak bisa hadir</label>
+        </div>
+        <button class="tombol lebar-penuh" type="submit">Submit</button>
+        <p class="pesan" id="pesan-rsvp" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+    <!-- ===== Hadiah ===== -->
+  {% if u.no_rekening or u.kado_alamat %}
+  <section class="bagian" id="hadiah">
+    <div class="isi panel">
+      <h2 class="judul muncul">Wedding Gift</h2>
+      <p class="pembuka muncul" style="--urut:1">{{ t_hadiah }}</p>
+      <button id="btn-gift" class="tombol muncul" style="--urut:2;margin-top:20px" type="button" aria-expanded="false" aria-controls="gift-isi">Tampilkan Gift</button>
+      <div id="gift-isi" class="gift-isi">
+
+        {% if u.no_rekening %}
+        <div class="kartu-gift">
+          <h3>{{ u.bank }}</h3>
+          <p class="rekening">{{ u.no_rekening }}</p>
+          <p class="atas-nama">{{ u.atas_nama }}</p>
+          <button class="btn-salin" type="button" data-nomor="{{ u.no_rekening }}" aria-label="Salin nomor rekening">
+            <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          </button>
+        </div>
+        {% endif %}
+
+        {% if u.kado_alamat %}
+        <div class="kartu-gift kartu-kado">
+          <div class="ikon-kado" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M20 7h-2.2A3 3 0 0 0 12 4.6 3 3 0 0 0 6.2 7H4a1 1 0 0 0-1 1v3h8V7h2v4h8V8a1 1 0 0 0-1-1zM9 7a1 1 0 1 1 1-1v1H9zm6 0h-1V6a1 1 0 1 1 1 1zM4 13v6a1 1 0 0 0 1 1h6v-7H4zm9 0v7h6a1 1 0 0 0 1-1v-6h-7z"/></svg>
+          </div>
+          <div class="isi-kado">
+            <p class="nama-kado">{{ u.kado_penerima or "Kirim Kado" }}</p>
+            {% if u.kado_telepon %}<p class="telp-kado">{{ u.kado_telepon }}</p>{% endif %}
+            <p class="alamat-kado">{{ u.kado_alamat }}</p>
+            {% if u.kado_telepon %}
+            <a class="tombol garis kecil-tombol" href="https://wa.me/{{ u.kado_telepon|wa_nomor }}" target="_blank" rel="noopener">Konfirmasi WhatsApp</a>
+            {% endif %}
+          </div>
+          <button class="btn-salin" type="button" data-nomor="{{ u.kado_alamat }}" aria-label="Salin alamat kado">
+            <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          </button>
+        </div>
+        {% endif %}
+
+        <div class="perhatian">
+          <strong>ATTENTION</strong>
+          {% if u.no_rekening %}Pastikan nama dan nomor rekening sudah sesuai dengan nama mempelai ketika melakukan proses transfer.<br>
+          Mohon untuk melakukan konfirmasi hadiah Anda dengan mengirim bukti transfer kepada mempelai melalui pesan pribadi.{% endif %}
+          {% if u.kado_alamat %}<br>Untuk kado fisik, mohon cantumkan nama pengirim pada paket dan konfirmasi pengiriman kepada penerima.{% endif %}
+          Terima kasih.
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ===== Ucapan ===== -->
+  <section class="bagian" id="ucapan">
+    <img class="pojok kn kecil-pojok fade" src="{{ url_for('static', filename='img/anggrek-pojok.webp') }}" alt="">
+    <div class="isi panel" style="margin-top:5px">
+      <h2 class="judul muncul">Ucapan dan Doa</h2>
+      <form id="form-ucapan" class="form muncul" style="--urut:1" data-url="{{ url_for('kirim_rsvp', slug=u.slug) }}" autocomplete="off">
+        <input type="text" name="website" class="hp-jebakan" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label>Nama *
+          <input type="text" name="nama" maxlength="60" value="" placeholder="Masukkan nama Anda..." required>
+        </label>
+        <label>Ucapan dan doa *
+          <textarea name="ucapan" rows="4" maxlength="500" required></textarea>
+        </label>
+        <button class="tombol lebar-penuh" type="submit">Kirim Ucapan</button>
+        <p class="pesan" id="pesan-ucapan" role="status"></p>
+      </form>
+      <div id="daftar-ucapan">
+        {% for r in ucapan %}
+        <article class="ucapan">
+          <strong>{{ r.nama }}</strong>
+          {% if r.kehadiran == 'hadir' %}<span class="badge">Hadir</span>
+          {% elif r.kehadiran == 'tidak_hadir' %}<span class="badge">Berhalangan</span>{% endif %}
+          <p>{{ r.ucapan }}</p>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Galeri (paling bawah, sebelum penutup) ===== -->
+  {% if galeri %}
+  <section class="bagian" id="galeri">
+    <div class="isi">
+      <h2 class="judul muncul">Galeri</h2>
+      <div class="galeri muncul" style="--urut:1">
+        {% for p in galeri %}<img src="{{ url_for('static', filename=p) }}" alt="Galeri {{ loop.index }}" loading="lazy">{% endfor %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- ===== Penutup ===== -->
+  <section class="bagian penutup" id="penutup">
+    <div class="isi">
+      <p class="pembuka muncul">{{ t_penutup }}</p>
+      <p class="kecil muncul" style="--urut:2;margin-top:34px">Kami yang berbahagia</p>
+      <h2 class="nama-besar kecil-nama muncul" style="--urut:2"><span class="berkilau">{{ u.panggilan_pria }} &amp; {{ u.panggilan_wanita }}</span></h2>
+    </div>
+  </section>
+
+  <footer class="footer-mewah">
+    <div class="garis"></div>
+    <p>Didesain oleh<br><strong>Selsa</strong></p>
+  </footer>
+</div>
+
+<div id="lightbox" role="dialog" aria-label="Pratinjau foto">
+  <button id="lightbox-tutup" class="lightbox-tutup" type="button" aria-label="Tutup foto">
+    <svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <img src="" alt="">
+</div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

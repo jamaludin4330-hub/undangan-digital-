@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <title>Masuk | Undangan Digital</title>
+</head>
+<body>
+  <div class="login-bungkus">
+    <div class="login-kartu">
+      <h1>Undangan Digital</h1>
+      <p>Masuk untuk mengelola undangan pernikahan</p>
+      {% for p in get_flashed_messages() %}<div class="pesan">{{ p }}</div>{% endfor %}
+      <form method="post">
+        <label for="username">Username</label>
+        <input id="username" name="username" required autofocus autocomplete="username">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" required autocomplete="current-password">
+        <button class="btn" type="submit">Masuk</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

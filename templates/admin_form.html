@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <title>Form Undangan | Undangan Digital</title>
+</head>
+<body>
+{% macro isian(nama, label, tipe='text', wajib=False, maks=200) %}
+<div>
+  <label for="f-{{ nama }}">{{ label }}{{ ' *' if wajib }}</label>
+  <input id="f-{{ nama }}" type="{{ tipe }}" name="{{ nama }}" value="{{ u[nama] or '' }}" maxlength="{{ maks }}" {{ 'required' if wajib }}>
+</div>
+{% endmacro %}
+{% macro area(nama, label, bawaan, baris=3, maks=600) %}
+<label for="f-{{ nama }}">{{ label }}</label>
+<textarea id="f-{{ nama }}" name="{{ nama }}" rows="{{ baris }}" maxlength="{{ maks }}" placeholder="{{ bawaan }}">{{ u[nama] or '' }}</textarea>
+{% endmacro %}
+{% macro foto(nama, label) %}
+<label for="f-{{ nama }}">{{ label }}</label>
+{% if mode == 'edit' and u[nama] %}
+<div class="foto-lama"><img src="{{ url_for('static', filename=u[nama]) }}" alt="Foto saat ini"></div>
+{% endif %}
+<input id="f-{{ nama }}" type="file" name="{{ nama }}" accept="image/*">
+{% endmacro %}
+
+  <header class="atas">
+    <div class="atas-isi">
+      <div class="merek">Undangan Digital<small>Panel Admin</small></div>
+      <nav class="menu">
+        <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('admin_logout') }}">Keluar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    {% for p in get_flashed_messages() %}<div class="pesan">{{ p }}</div>{% endfor %}
+
+    <a class="kembali" href="{{ url_for('admin_dashboard') }}">&larr; Kembali ke daftar</a>
+    <div class="judul-halaman">
+      <div>
+        <h1>{{ 'Undangan Baru' if mode == 'baru' else 'Edit Undangan' }}</h1>
+        <p>Isi data di bawah. Kolom bertanda * wajib diisi.</p>
+      </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+
+      <div class="kartu">
+        <h3>Informasi Dasar</h3>
+        <label for="f-slug">Slug (bagian dari link, contoh: raka-nadia) *</label>
+        <input id="f-slug" name="slug" value="{{ u.slug or '' }}" required {{ 'readonly' if mode == 'edit' }}>
+        <div class="grid">
+          {{ isian('panggilan_pria', 'Nama Panggilan Pria', wajib=True) }}
+          {{ isian('panggilan_wanita', 'Nama Panggilan Wanita', wajib=True) }}
+          {{ isian('nama_pria', 'Nama Lengkap Pria') }}
+          {{ isian('nama_wanita', 'Nama Lengkap Wanita') }}
+          {{ isian('ortu_pria', 'Orang Tua Pria (contoh: Bapak A dan Ibu B)') }}
+          {{ isian('ortu_wanita', 'Orang Tua Wanita (contoh: Bapak C dan Ibu D)') }}
+        </div>
+        {{ isian('tanggal_acara', 'Tanggal dan Jam Acara Utama (untuk hitung mundur)', 'datetime-local', True) }}
+      </div>
+
+      <div class="kartu">
+        <h3>Acara</h3>
+        <div class="grid">
+          {{ isian('akad_tempat', 'Tempat Akad') }}
+          {{ isian('akad_waktu', 'Waktu Akad (contoh: 08.00 - 10.00 WIB)') }}
+          {{ isian('akad_alamat', 'Alamat Akad', maks=300) }}
+          {{ isian('resepsi_tempat', 'Tempat Resepsi') }}
+          {{ isian('resepsi_waktu', 'Waktu Resepsi') }}
+          {{ isian('resepsi_alamat', 'Alamat Resepsi', maks=300) }}
+        </div>
+        {{ isian('maps_url', 'Link Google Maps (diawali https://)', maks=500) }}
+      </div>
+
+      <div class="kartu">
+        <h3>Teks Undangan (opsional)</h3>
+        <p class="ket">Kosongkan kolom mana pun untuk memakai teks bawaan (tampil sebagai teks abu-abu di dalam kolom). Sesuaikan dengan agama dan adat kedua mempelai.</p>
+        {{ area('kalimat_pembuka', 'Kalimat Pembuka (bagian mempelai)', 'Dengan memohon rahmat dan ridho Tuhan Yang Maha Esa, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri pernikahan kami:') }}
+        {{ area('kutipan', 'Kutipan Ayat atau Kata Mutiara', 'Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu merasa tenteram kepadanya.') }}
+        {{ isian('sumber_kutipan', 'Sumber Kutipan (contoh: Q.S. Ar-Rum : 21)') }}
+        {{ area('kalimat_rsvp', 'Kalimat di Bagian RSVP', 'Merupakan suatu kehormatan dan kebahagiaan bagi kami sekeluarga apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu kepada kedua mempelai. Atas kehadiran serta doa restu, kami ucapkan terima kasih.', 4) }}
+        {{ area('kalimat_hadiah', 'Kalimat di Bagian Hadiah', 'Kehadiran dan doa Anda adalah hadiah terindah bagi kami. Namun, apabila berkenan memberikan tanda kasih, silakan gunakan informasi di bawah ini.') }}
+        {{ area('kalimat_penutup', 'Kalimat Penutup', 'Atas kehadiran serta doa restu Bapak/Ibu/Saudara/i, kami ucapkan terima kasih.', 2, 400) }}
+      </div>
+
+      <div class="kartu">
+        <h3>Amplop Digital (opsional)</h3>
+        <p class="ket">Bagian Hadiah hanya tampil di undangan jika nomor rekening diisi.</p>
+        <div class="grid">
+          {{ isian('bank', 'Bank / E-Wallet') }}
+          {{ isian('no_rekening', 'Nomor Rekening') }}
+          {{ isian('atas_nama', 'Atas Nama') }}
+        </div>
+      </div>
+
+      <div class="kartu">
+        <h3>Kirim Kado (opsional)</h3>
+        <p class="ket">Untuk tamu yang ingin mengirim kado fisik. Bagian ini tampil di undangan jika alamat diisi.</p>
+        <div class="grid">
+          {{ isian('kado_penerima', 'Nama Penerima Kado') }}
+          {{ isian('kado_telepon', 'Nomor WhatsApp Penerima (contoh: 08123456789)') }}
+        </div>
+        {{ isian('kado_alamat', 'Alamat Pengiriman Kado', maks=300) }}
+      </div>
+
+      <div class="kartu">
+        <h3>Foto (JPG, PNG, atau WEBP)</h3>
+        {% if mode == 'edit' %}<p class="ket">Kosongkan jika tidak ingin mengganti foto.</p>{% endif %}
+        {{ foto('foto_cover', 'Foto Utama (cover, disarankan vertikal 3:4)') }}
+        {{ foto('foto_pria', 'Foto Mempelai Pria (disarankan vertikal)') }}
+        {{ foto('foto_wanita', 'Foto Mempelai Wanita (disarankan vertikal)') }}
+        <label for="f-galeri">Galeri (boleh pilih banyak foto)</label>
+        <input id="f-galeri" type="file" name="galeri" accept="image/*" multiple>
+        {% if mode == 'edit' %}
+        <label class="baris-cek"><input type="checkbox" name="hapus_galeri" value="1"> Kosongkan galeri lama sebelum menambah yang baru</label>
+        {% endif %}
+      </div>
+
+      <div class="aksi">
+        <button class="btn" type="submit">Simpan</button>
+        <a class="btn abu" href="{{ url_for('admin_dashboard') }}">Batal</a>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

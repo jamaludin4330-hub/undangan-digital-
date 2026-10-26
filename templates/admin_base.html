@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block judul %}Admin{% endblock %} | Undangan Digital</title>
+  <style>
+    body{font-family:system-ui,sans-serif;background:#faf5f3;color:#4a3a40;margin:0}
+    header{background:#fff;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+    header a{color:#c2677c;text-decoration:none;font-weight:600;margin-left:16px}
+    main{max-width:980px;margin:28px auto;padding:0 20px}
+    .kartu{background:#fff;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 4px 18px rgba(0,0,0,.05)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid #f0e4e6;text-align:left;font-size:.92rem}
+    label{font-size:.85rem;font-weight:600}
+    input,select,textarea{width:100%;padding:10px;border:1px solid #e3d0d4;border-radius:8px;font:inherit;margin:4px 0 12px;box-sizing:border-box}
+    .btn{display:inline-block;background:#c2677c;color:#fff;border:none;padding:9px 18px;border-radius:8px;text-decoration:none;cursor:pointer;font:inherit;font-size:.9rem}
+    .btn.abu{background:#8c7a80}.btn.merah{background:#b23b3b}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+    .pesan{background:#fff3cd;padding:10px 14px;border-radius:8px;margin-bottom:14px}
+    @media(max-width:700px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <strong>💐 Admin Undangan</strong>
+    {% if session.get('admin') %}
+    <nav>
+      <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('admin_logout') }}">Keluar</a>
+    </nav>
+    {% endif %}
+  </header>
+  <main>
+    {% for p in get_flashed_messages() %}<div class="pesan">{{ p }}</div>{% endfor %}
+    {% block isi %}{% endblock %}
+  </main>
+</body>
+</html>

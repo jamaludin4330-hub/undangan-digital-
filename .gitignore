@@ -1,0 +1,8 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+secret.key
+database.db
+static/uploads/
+.env

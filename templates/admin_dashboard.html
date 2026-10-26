@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <title>Dashboard | Undangan Digital</title>
+</head>
+<body>
+  <header class="atas">
+    <div class="atas-isi">
+      <div class="merek">Undangan Digital<small>Panel Admin</small></div>
+      <nav class="menu">
+        <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('admin_logout') }}">Keluar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    {% for p in get_flashed_messages() %}<div class="pesan">{{ p }}</div>{% endfor %}
+
+    <div class="judul-halaman">
+      <div>
+        <h1>Daftar Undangan</h1>
+        <p>Kelola semua undangan pernikahan dari satu tempat.</p>
+      </div>
+      <a class="btn" href="{{ url_for('admin_baru') }}">Buat Undangan Baru</a>
+    </div>
+
+    <div class="statistik tiga">
+      <div class="stat"><b>{{ total.undangan }}</b><span>Undangan</span></div>
+      <div class="stat"><b>{{ total.rsvp }}</b><span>Konfirmasi dan ucapan</span></div>
+      <div class="stat"><b>{{ total.hadir }}</b><span>Tamu hadir</span><small>jumlah orang yang konfirmasi hadir</small></div>
+    </div>
+
+    {% if daftar %}
+    <div class="daftar-undangan">
+      {% for u in daftar %}
+      <article class="u-kartu">
+        <h3>{{ u.panggilan_pria }} &amp; {{ u.panggilan_wanita }}</h3>
+        <p class="u-tanggal">{{ u.tanggal_acara|tgl_id }}{% if not u.tanggal_acara %}Tanggal belum diisi{% endif %}</p>
+        <p class="u-link"><a href="{{ url_for('halaman_undangan', slug=u.slug) }}" target="_blank" rel="noopener">/u/{{ u.slug }}</a></p>
+        <div class="u-angka">
+          <div><b>{{ u.total_rsvp }}</b><span>Masuk</span></div>
+          <div><b>{{ u.total_hadir }}</b><span>Hadir</span></div>
+          <div><b>{{ u.tanggal_acara|sisa_hari }}</b><span>Hari lagi</span></div>
+        </div>
+        <div class="aksi">
+          <a class="btn kecil" href="{{ url_for('admin_detail', uid=u.id) }}">Detail</a>
+          <a class="btn kecil garis" href="{{ url_for('admin_edit', uid=u.id) }}">Edit</a>
+          <a class="btn kecil garis" href="{{ url_for('halaman_undangan', slug=u.slug) }}" target="_blank" rel="noopener">Lihat</a>
+          <form method="post" action="{{ url_for('admin_hapus', uid=u.id) }}"
+                data-konfirmasi="Hapus undangan ini beserta semua datanya?">
+            <button class="btn kecil merah" type="submit">Hapus</button>
+          </form>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="kartu kosong">
+      <h3>Belum ada undangan</h3>
+      <p style="margin-bottom:16px">Mulai dengan membuat undangan pertama.</p>
+      <a class="btn" href="{{ url_for('admin_baru') }}">Buat Undangan Baru</a>
+    </div>
+    {% endif %}
+  </main>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

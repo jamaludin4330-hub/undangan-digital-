@@ -1,0 +1,131 @@
+/* =====================================================
+   admin.css - Tampilan dashboard admin dan customer
+   Tema: klasik modern (burgundy, krem, emas)
+   ===================================================== */
+
+:root{
+  --marun:#a8353a; --marun-tua:#7f2128; --tombol:#a04a4c;
+  --krem:#faf3ec; --kertas:#ffffff; --garis:#eadcd0;
+  --emas:#b8975a; --teks:#4a3438; --lembut:#8d6f72;
+  --hijau:#4f7a57; --kuning:#b88a2b; --merah:#b23b3b;
+  --judul:"Italiana",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:400 15px/1.6 "Roboto",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--teks);
+  background:var(--krem) linear-gradient(180deg,#f6e9dc 0,var(--krem) 220px) no-repeat;min-height:100vh}
+a{color:var(--marun);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ===== Header ===== */
+.atas{background:linear-gradient(90deg,var(--marun-tua),var(--marun));color:#fff;box-shadow:0 4px 18px rgba(94,22,32,.25)}
+.atas-isi{max-width:1040px;margin:0 auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.merek{font:400 1.45rem/1 var(--judul);letter-spacing:.06em;color:#fff;text-transform:uppercase}
+.merek small{display:block;font:400 .66rem sans-serif;letter-spacing:.3em;color:rgba(255,255,255,.75);margin-top:5px}
+.menu a{color:#fff;margin-left:6px;padding:8px 16px;border-radius:30px;font-size:.9rem;transition:background .2s}
+.menu a:hover{background:rgba(255,255,255,.18);text-decoration:none}
+
+main{max-width:1040px;margin:30px auto 60px;padding:0 20px}
+.judul-halaman{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.judul-halaman h1{font:400 2rem/1.15 var(--judul);color:var(--marun);letter-spacing:.03em}
+.judul-halaman p{color:var(--lembut);font-size:.92rem;margin-top:4px}
+.kembali{display:inline-block;font-size:.88rem;margin-bottom:10px;color:var(--lembut)}
+
+/* ===== Kartu dan bagian ===== */
+.kartu{background:var(--kertas);border:1px solid var(--garis);border-radius:18px;padding:22px;margin-bottom:20px;
+  box-shadow:0 6px 22px rgba(94,22,32,.06)}
+.kartu h2,.kartu h3{font:400 1.25rem/1.2 var(--judul);color:var(--marun);letter-spacing:.03em;margin-bottom:6px}
+.kartu .ket{font-size:.88rem;color:var(--lembut);margin-bottom:14px}
+.tautan{word-break:break-all;background:var(--krem);border:1px dashed var(--emas);border-radius:12px;padding:10px 14px;
+  font-size:.9rem;margin:10px 0 14px}
+
+/* ===== Statistik ===== */
+.statistik{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.statistik.tiga{grid-template-columns:repeat(3,1fr)}
+.stat{background:var(--kertas);border:1px solid var(--garis);border-top:3px solid var(--emas);border-radius:16px;padding:16px 18px;
+  box-shadow:0 6px 18px rgba(94,22,32,.05)}
+.stat b{display:block;font:400 2rem/1.1 var(--judul);color:var(--marun)}
+.stat span{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--lembut)}
+.stat small{display:block;font-size:.78rem;color:var(--lembut);margin-top:2px}
+
+/* ===== Tombol ===== */
+.btn{display:inline-block;background:var(--tombol);color:#fff;border:1px solid var(--tombol);padding:9px 20px;border-radius:30px;
+  font:inherit;font-size:.88rem;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s,opacity .2s;line-height:1.3}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(94,22,32,.2);text-decoration:none;color:#fff}
+.btn.garis{background:transparent;color:var(--marun);border-color:var(--marun)}
+.btn.garis:hover{background:var(--marun);color:#fff}
+.btn.abu{background:#8c7a80;border-color:#8c7a80}
+.btn.merah{background:var(--merah);border-color:var(--merah)}
+.btn.kecil{padding:6px 14px;font-size:.8rem}
+.aksi{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.aksi form{display:inline}
+
+/* ===== Pesan ===== */
+.pesan{background:#fff7e0;border:1px solid #ecd9a0;color:#6b5314;padding:12px 16px;border-radius:12px;margin-bottom:16px;font-size:.92rem}
+
+/* ===== Daftar undangan (dashboard admin) ===== */
+.daftar-undangan{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.u-kartu{background:var(--kertas);border:1px solid var(--garis);border-radius:20px;padding:22px;position:relative;overflow:hidden;
+  box-shadow:0 8px 24px rgba(94,22,32,.07)}
+.u-kartu::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--marun),var(--emas))}
+.u-kartu h3{font:400 1.5rem/1.2 var(--judul);color:var(--marun);letter-spacing:.03em}
+.u-tanggal{font-size:.88rem;color:var(--lembut);margin:2px 0 12px}
+.u-link{font-size:.85rem;margin-bottom:14px;word-break:break-all}
+.u-angka{display:flex;gap:10px;margin-bottom:16px}
+.u-angka div{flex:1;background:var(--krem);border-radius:12px;padding:8px 10px;text-align:center}
+.u-angka b{display:block;font:400 1.35rem/1.1 var(--judul);color:var(--marun)}
+.u-angka span{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--lembut)}
+.kosong{text-align:center;padding:50px 20px;color:var(--lembut)}
+.kosong h3{margin-bottom:8px}
+
+/* ===== Filter dan tabel ===== */
+.filter{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 14px}
+.filter button{border:1px solid var(--garis);background:var(--krem);color:var(--teks);padding:6px 16px;border-radius:30px;cursor:pointer;
+  font:inherit;font-size:.82rem}
+.filter button.aktif{background:var(--marun);border-color:var(--marun);color:#fff}
+.tabel-bungkus{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--lembut);text-align:left;padding:10px;border-bottom:2px solid var(--garis);white-space:nowrap}
+td{padding:12px 10px;border-bottom:1px solid #f1e6dc;font-size:.92rem;vertical-align:top}
+tr:hover td{background:#fdf8f3}
+.lencana{display:inline-block;padding:2px 12px;border-radius:20px;font-size:.74rem;letter-spacing:.04em;color:#fff;white-space:nowrap}
+.lencana.hadir{background:var(--hijau)}
+.lencana.tidak_hadir{background:var(--merah)}
+.lencana.ragu{background:var(--kuning)}
+.lencana.ucapan{background:var(--emas)}
+.waktu{color:var(--lembut);font-size:.82rem;white-space:nowrap}
+
+/* ===== Form ===== */
+label{display:block;font-size:.85rem;font-weight:500;color:var(--teks);margin-top:4px}
+input,select,textarea{width:100%;padding:11px 14px;border:1px solid var(--garis);border-radius:12px;font:inherit;background:#fffdfb;
+  color:var(--teks);margin:5px 0 14px}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(168,53,58,.25);border-color:var(--marun)}
+input[type=checkbox]{width:auto;margin:0 8px 0 0}
+input[type=file]{padding:9px 12px;background:var(--krem)}
+.baris-cek{display:flex;align-items:center;font-weight:400;margin-top:6px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.foto-lama{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 14px}
+.foto-lama img{width:72px;height:96px;object-fit:cover;border-radius:10px;border:1px solid var(--garis)}
+
+/* ===== Halaman login ===== */
+.login-bungkus{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-kartu{width:100%;max-width:400px;background:var(--kertas);border:1px solid var(--garis);border-radius:24px;padding:36px 30px;
+  box-shadow:0 18px 50px rgba(94,22,32,.15);text-align:center;border-top:5px solid var(--marun)}
+.login-kartu h1{font:400 1.9rem/1.2 var(--judul);color:var(--marun);letter-spacing:.05em;text-transform:uppercase}
+.login-kartu p{color:var(--lembut);font-size:.88rem;margin:6px 0 24px}
+.login-kartu form{text-align:left}
+.login-kartu .btn{width:100%;padding:12px;font-size:.95rem;margin-top:4px}
+
+/* ===== Layar kecil ===== */
+@media(max-width:760px){
+  .statistik,.statistik.tiga{grid-template-columns:repeat(2,1fr)}
+  .daftar-undangan{grid-template-columns:1fr}
+  .grid{grid-template-columns:1fr}
+  .judul-halaman h1{font-size:1.6rem}
+  .kartu{padding:18px}
+  /* tabel RSVP berubah jadi kartu di HP */
+  table.responsif thead{display:none}
+  table.responsif tr{display:block;border:1px solid var(--garis);border-radius:14px;padding:10px 12px;margin-bottom:10px;background:#fffdfb}
+  table.responsif td{display:flex;justify-content:space-between;gap:14px;border:none;padding:5px 0;text-align:right}
+  table.responsif td::before{content:attr(data-label);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--lembut);text-align:left}
+  table.responsif tr:hover td{background:transparent}
+}
