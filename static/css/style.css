@@ -79,7 +79,7 @@ img{max-width:100%;display:block}
   transform:translate(-50%,50%);pointer-events:none;z-index:3}
 .bunga-kotak{
   position:absolute;top:0;left:0;width:min(40%,160px);height:auto;
-  transform:translate(-16%,-35%);pointer-events:none;z-index:3}
+  transform:translate(-16%,-30%);pointer-events:none;z-index:3}
 #kutipan{padding-top:110px}
 .kutipan-panel-ukiran{padding-top:58px}
 
@@ -256,7 +256,8 @@ body:not(.terkunci) .nav-melayang{transform:translate(-50%,0)}
 .btn-salin svg{width:28px;height:28px;fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .btn-salin.tersalin::after{content:"Tersalin";position:absolute;right:0;top:-24px;font:400 .72rem var(--isi);
   background:rgba(60,30,20,.7);color:#fff;padding:2px 9px;border-radius:10px}
-.kartu-kado{display:flex;align-items:center;gap:16px;margin-top:14px;padding:18px 62px 18px 18px}
+.kartu-gift + .kartu-gift{margin-top:14px}
+  .kartu-kado{display:flex;align-items:center;gap:16px;margin-top:14px;padding:18px 62px 18px 18px}
 .ikon-kado{flex:0 0 58px;width:58px;height:58px;border-radius:50%;background:#b89a5e;display:flex;align-items:center;justify-content:center}
 .ikon-kado svg{width:28px;height:28px;fill:#fff}
 .isi-kado{flex:1;min-width:0}
