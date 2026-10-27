@@ -90,13 +90,20 @@
         {{ area('kalimat_penutup', 'Kalimat Penutup', 'Atas kehadiran serta doa restu Bapak/Ibu/Saudara/i, kami ucapkan terima kasih.', 2, 400) }}
       </div>
 
-      <div class="kartu">
+            <div class="kartu">
         <h3>Amplop Digital (opsional)</h3>
-        <p class="ket">Bagian Hadiah hanya tampil di undangan jika nomor rekening diisi.</p>
+        <p class="ket">Bagian Hadiah hanya tampil di undangan jika nomor rekening diisi. Rekening kedua boleh dikosongkan.</p>
+        <p class="ket"><strong>Rekening 1</strong></p>
         <div class="grid">
           {{ isian('bank', 'Bank / E-Wallet') }}
           {{ isian('no_rekening', 'Nomor Rekening') }}
           {{ isian('atas_nama', 'Atas Nama') }}
+        </div>
+        <p class="ket"><strong>Rekening 2 (opsional)</strong></p>
+        <div class="grid">
+          {{ isian('bank2', 'Bank / E-Wallet') }}
+          {{ isian('no_rekening2', 'Nomor Rekening') }}
+          {{ isian('atas_nama2', 'Atas Nama') }}
         </div>
       </div>
 
