@@ -272,10 +272,9 @@ body:not(.terkunci) .nav-melayang{transform:translate(-50%,0)}
 
 /* ===== Galeri ===== */
 .galeri{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.galeri img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:18px;cursor:zoom-in;
+.galeri img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;border-radius:18px;cursor:zoom-in;
   box-shadow:0 6px 20px rgba(94,22,32,.18);transition:transform .4s}
 .galeri img:hover{transform:scale(1.03)}
-.galeri img:nth-child(3n+1){grid-column:span 2;aspect-ratio:16/10}
 #lightbox{position:fixed;inset:0;z-index:150;background:rgba(40,20,20,.92);display:none;
   align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
 #lightbox img{max-height:90vh;border-radius:12px}
