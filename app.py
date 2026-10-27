@@ -67,11 +67,13 @@ FIELD_TEKS = [
     "kalimat_pembuka", "kalimat_rsvp", "kalimat_hadiah", "kalimat_penutup",
     "bank", "no_rekening", "atas_nama",
     "kado_penerima", "kado_telepon", "kado_alamat",
+    "bank2", "no_rekening2", "atas_nama2",
 ]
 # Kolom yang ditambahkan setelah versi pertama (dimigrasi otomatis di init_db)
 KOLOM_BARU = ["sumber_kutipan", "kalimat_pembuka", "kalimat_rsvp",
               "kalimat_hadiah", "kalimat_penutup",
-              "kado_penerima", "kado_telepon", "kado_alamat"]
+              "kado_penerima", "kado_telepon", "kado_alamat",
+              "bank2", "no_rekening2", "atas_nama2"]
 # Batas panjang input per kolom (bawaan 200 karakter)
 BATAS = {"kutipan": 600, "kalimat_pembuka": 600, "kalimat_rsvp": 600,
          "kalimat_hadiah": 600, "kalimat_penutup": 400,
@@ -246,7 +248,7 @@ def tidak_ada(e):
             "Halaman tidak ditemukan</h1>"), 404
 
 
-# --------- Halaman publik ---------
+# ---------- Halaman publik ----------
 @app.route("/")
 def beranda():
     return redirect(url_for("admin_dashboard"))
@@ -533,6 +535,9 @@ def admin_hapus(uid):
 init_db()
 
 if __name__ == "__main__":
+    # Mode debug hanya lewat FLASK_DEBUG=1 dan dikunci ke localhost
+    # (debugger Werkzeug berbahaya bila terbuka di jaringan).
+    # Untuk menguji dari HP di WiFi yang sama: jalankan tanpa FLASK_DEBUG.
     debug = os.environ.get("FLASK_DEBUG") == "1"
     host = "127.0.0.1" if debug else os.environ.get("HOST", "0.0.0.0")
     app.run(debug=debug, host=host, port=5000)
