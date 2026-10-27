@@ -96,7 +96,11 @@
         </div>
       </div>
       <p class="script tulis muncul" style="--urut:1;margin-top:46px">the wedding of</p>
-      <h2 class="nama-besar kecil-nama muncul" style="--urut:2"><span class="berkilau">{{ u.panggilan_pria }} &amp; {{ u.panggilan_wanita }}</span></h2>
+      <h2 class="nama-besar kecil-nama muncul nama-vertikal" style="--urut:2">
+  <span class="berkilau">{{ u.panggilan_pria }}</span>
+  <span class="amp-tengah berkilau">&amp;</span>
+  <span class="berkilau">{{ u.panggilan_wanita }}</span>
+</h2>
       <p class="tanggal muncul" style="--urut:3">{{ u.tanggal_acara|tgl_id }}</p>
     </div>
   </section>
@@ -114,9 +118,9 @@
   </section>
 
   <!-- ===== Mempelai ===== -->
-  <section class="bagian" id="mempelai">
-    <img class="pojok ka kecil-pojok fade" src="{{ url_for('static', filename='img/anggrek-pojok.webp') }}" alt="">
-    <div class="isi panel" style="margin-top:10px">
+  <section class="bagian" id="kutipan">
+    <div class="isi panel muncul kutipan-panel-ukiran">
+      <img class="bunga-kotak" src="{{ url_for('static', filename='img/anggrek-pojok.webp') }}" alt="">
       <h2 class="judul muncul">With Love</h2>
       <p class="pembuka muncul" style="--urut:1">{{ t_pembuka }}</p>
 
@@ -238,7 +242,7 @@
   </section>
 
     <!-- ===== Hadiah ===== -->
-  {% if u.no_rekening or u.kado_alamat %}
+    {% if u.no_rekening or u.no_rekening2 or u.kado_alamat %}
   <section class="bagian" id="hadiah">
     <div class="isi panel">
       <h2 class="judul muncul">Wedding Gift</h2>
@@ -252,6 +256,17 @@
           <p class="rekening">{{ u.no_rekening }}</p>
           <p class="atas-nama">{{ u.atas_nama }}</p>
           <button class="btn-salin" type="button" data-nomor="{{ u.no_rekening }}" aria-label="Salin nomor rekening">
+            <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          </button>
+        </div>
+        {% endif %}
+
+        {% if u.no_rekening2 %}
+        <div class="kartu-gift">
+          <h3>{{ u.bank2 }}</h3>
+          <p class="rekening">{{ u.no_rekening2 }}</p>
+          <p class="atas-nama">{{ u.atas_nama2 }}</p>
+          <button class="btn-salin" type="button" data-nomor="{{ u.no_rekening2 }}" aria-label="Salin nomor rekening kedua">
             <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
           </button>
         </div>
@@ -278,7 +293,7 @@
 
         <div class="perhatian">
           <strong>ATTENTION</strong>
-          {% if u.no_rekening %}Pastikan nama dan nomor rekening sudah sesuai dengan nama mempelai ketika melakukan proses transfer.<br>
+          {% if u.no_rekening or u.no_rekening2 %}Pastikan nama dan nomor rekening sudah sesuai dengan nama mempelai ketika melakukan proses transfer.<br>
           Mohon untuk melakukan konfirmasi hadiah Anda dengan mengirim bukti transfer kepada mempelai melalui pesan pribadi.{% endif %}
           {% if u.kado_alamat %}<br>Untuk kado fisik, mohon cantumkan nama pengirim pada paket dan konfirmasi pengiriman kepada penerima.{% endif %}
           Terima kasih.
@@ -289,9 +304,9 @@
   {% endif %}
 
   <!-- ===== Ucapan ===== -->
-  <section class="bagian" id="ucapan">
-    <img class="pojok kn kecil-pojok fade" src="{{ url_for('static', filename='img/anggrek-pojok.webp') }}" alt="">
-    <div class="isi panel" style="margin-top:5px">
+  <section class="bagian" id="kutipan">
+    <div class="isi panel muncul kutipan-panel-ukiran">
+      <img class="bunga-kotak" src="{{ url_for('static', filename='img/anggrek-pojok.webp') }}" alt="">
       <h2 class="judul muncul">Ucapan dan Doa</h2>
       <form id="form-ucapan" class="form muncul" style="--urut:1" data-url="{{ url_for('kirim_rsvp', slug=u.slug) }}" autocomplete="off">
         <input type="text" name="website" class="hp-jebakan" tabindex="-1" autocomplete="off" aria-hidden="true">
